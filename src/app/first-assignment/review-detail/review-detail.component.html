@@ -1,0 +1,24 @@
+<div class="row" *ngFor="let description of Description">
+    <div class="col-2 text-center">
+        <!--<img src="../../assets/firstAssignment/mickeymouse.jfif" width="120px" />-->
+        <img [attr.src]="description.ProfilePicture" width="90px" />
+    </div>
+    <div class="col-10">
+        <div class="row" style="padding-left: 5%;">
+            <div class="col-12 text-left">
+                <!--<p>Review Description Component</!--<p>-->
+                <p>{{description.ReviewDescription}}</p>
+            </div>
+
+        </div>
+        <div class="row" style="padding-left: 5%;" *ngFor="let action of description.Action">
+            <div class="col-10 pd-2 pt-2 left text-left">
+                <p>{{action.Author}}</p>
+            </div>
+            <div class="col-2 p-0 m-0 right">
+                <button class="btn btn-secondary" style="float: left;">+</button>
+                <button class="btn btn-secondary" style="float: right;">-</button>
+            </div>
+        </div>
+    </div>
+</div>

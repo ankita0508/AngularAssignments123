@@ -1,0 +1,31 @@
+<br>
+<div class="row">
+    <div class="col-2"></div>
+    <div class="col-8">
+        <div class="row" *ngFor="let review of reviews">
+            <div class="col-12 pt-0 pb-3" style="background-color: #e9e6e6;">
+                <div class="row mt-2 pb-2">
+                    <div class="col-1">
+
+                    </div>
+                    <div class="col-10 text-center">
+                        <div class="card">
+                            <div class="card-header bg-secondary" id="card1">
+                                <h2 class="mb-0">
+
+                                    <app-review-title [Title]="review.Title">
+
+                                    </app-review-title>
+                                </h2>
+                            </div>
+                            <div class="card-body">
+                                <app-review-detail [Description]="review.Description"></app-review-detail>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-2"></div>
+    </div>
+</div>
