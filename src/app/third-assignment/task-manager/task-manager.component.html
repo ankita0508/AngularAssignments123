@@ -6,41 +6,67 @@
     <div class="col-10">
         <div class="row">
             <div class="col-12">
+                <!--
                 <form (submit)="addItem()">
                     <div class="form-row align-items-center">
                         <div class="col-sm-3 my-1">
                             <label class="sr-only" for="txtAddItem">Name</label>
-                            <input #taskInput autofocus id="to-do-input" [(ngModel)]="txtAddItem" type="text" name="txtAddItem" class="input" placeholder="Enter a ToDo item..." class="form-control">
+                            <input #taskInput autofocus id="to-do-input" [(ngModel)]="txtAddItem" type="text" name="txtAddItem" class="input" placeholder="Enter a ToDo item..." class="form-control" required>
                         </div>
                         <div class="col-auto my-1">
-                            <button class="btn btn-secondary" (click)="setFocus()" type="submit">Add</button>
+                            <button class="btn btn-secondary" type="submit">Add</button>
                         </div>
                     </div>
+                </form>-->
 
+                <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)" novalidate>
+                    <input name="toDo" ngModel required #toDo="ngModel">
+                    <br/>
+                    <button type="submit">Submit</button>
                 </form>
-            </div>
 
-        </div>
+                <p>Pending</p>
+                <div class="row">
+                    <ol>
+                        <li *ngFor="let todo of pendingTasks">
+                            {{todo.name}}
+                            <button type="button" (click)="markAsCompleted(todo)">Done</button>
+                        </li>
+                    </ol>
+                </div>
 
+                <p>Completed</p>
+                <div>
+                    <ol>
+                        <li *ngFor="let todo of completedTasks">
+                            {{todo.name}}
+                            <button type="button" (click)="deleteToDo(todo.id)">Delete</button>
+                        </li>
+                    </ol>
+                </div>
+                <!--
         <p>Pending</p>
         <div class="row">
+
             <ol>
                 <li *ngFor="let task of allPendingTasks">
                     {{task.task}}
                     <button (click)="completedItem(task.task)">Done</button>
                 </li>
-                <br>
             </ol>
+
         </div>
 
         <p>Completed</p>
-        <ol>
-            <li *ngFor="let task of allCompletedTasks">
-                {{task.task}}
-                <button (click)="deleteItem(task.task)">Delete</button>
-            </li>
-            <br>
-        </ol>
-    </div>
-    <div class="col-2"></div>
-</div>
+        <div>
+
+            <ol>
+                <li *ngFor="let task of allCompletedTasks">
+                    {{task.task}}
+                    <button (click)="deleteItem(task.task)">Delete</button>
+                </li>
+            </ol>
+
+        </div>-->
+                <div class="col-2"></div>
+            </div>

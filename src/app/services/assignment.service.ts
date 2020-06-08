@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { ToDos } from '../models/ToDos.model';
+
+const baseUrl = "http://localhost:3000/ToDos";
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +11,22 @@ import { HttpClient } from '@angular/common/http';
 export class AssignmentService {
 
   constructor(private http: HttpClient) { }
+
+  getAllToDos(){
+    return this.http.get<ToDos[]>(baseUrl);
+  }
+
+  deleteToDo(Id: number){
+    return this.http.delete<ToDos>(baseUrl + '/' + Id);
+  }
+
+  markAsCompleted(todo: ToDos){
+    return this.http.put<ToDos>(baseUrl + '/' + todo.id, todo);
+  }
+
+  createToDo(todo){
+    return this.http.post(baseUrl, todo);
+  }
 
   getPendingTasks(){
   //return this.http.get("https://jsonplaceholder.typicode.com/todos");

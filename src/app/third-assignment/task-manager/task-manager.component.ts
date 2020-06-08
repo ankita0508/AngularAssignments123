@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AssignmentService } from 'src/app/services/assignment.service';
+import { ToDos } from 'src/app/models/ToDos.model';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-task-manager',
@@ -10,31 +12,81 @@ export class TaskManagerComponent implements OnInit {
 
   allPendingTasks = [];
   allCompletedTasks = [];
-  todos: any;
+  allToDos: ToDos[] = [];
+  pendingTasks: ToDos[]= [];
+  completedTasks: ToDos[] = [];
+
 
   txtAddItem;
 
   constructor(private assignmentService: AssignmentService) { }
 
   ngOnInit(): void {
-    this.allPendingTasks = this.assignmentService.getPendingTasks();
-    /*this.assignmentService.getPendingTasks().subscribe((data) => {
-      this.todos = data;
-    });
+    //this.allPendingTasks = this.assignmentService.getPendingTasks();
+    //this.allCompletedTasks = this.assignmentService.getCompletedTasks();
+    this.getAllToDos();
+  }
 
-    var counter = 0;
-    for(let todo of this.todos){
-      counter++;
+  onSubmit(myForm: NgForm) {
 
-      var title = todo.title;
-      console.log(title);
+    console.log(myForm.value['toDo']);
+    var todo: ToDos = <ToDos>{};
+    if(myForm.value['toDo'] !== ""){
+      //this.allPendingTasks.push({task: this.txtAddItem});
 
-      if(counter == 10){
-        break;
+      todo.id = null;
+      todo.name = myForm.value['toDo'];
+      todo.isPending = true;
+      todo.isActive = true;
+      //this.assignmentService.currentToDo = Object.assign({}, todo);
+      console.log(todo);
+
+      this.assignmentService.createToDo(todo).subscribe((data: ToDos) => {
+
+        this.getAllToDos();
+      }, error => {
+        //console.log(error);
+      });
+
+      myForm.value['toDo'] = "";
+    }
+
+  }
+
+  getAllToDos() {
+    this.assignmentService.getAllToDos().subscribe((data) =>
+    {
+      this.allToDos = data;
+      for(let todo in this.allToDos){
+        if(this.allToDos[todo].isActive){
+          if(this.allToDos[todo].isPending){
+            this.pendingTasks.push(this.allToDos[todo]);
+          }else{
+            this.completedTasks.push(this.allToDos[todo]);
+          }
+        }
       }
-    }*/
 
-    this.allCompletedTasks = this.assignmentService.getCompletedTasks();
+    }, error => {
+      //console.log(error);
+    });
+  }
+
+  deleteToDo(id: number){
+    this.assignmentService.deleteToDo(id).subscribe((todo: ToDos) => {
+      //console.log(todo.name + "is deleted!!");
+    }, error => {
+      //console.log(error);
+    })
+  }
+
+  markAsCompleted(todo: ToDos){
+    todo['isPending'] = false;
+    this.assignmentService.markAsCompleted(todo).subscribe((todo: ToDos) => {
+    }, error => {
+      //console.log(error);
+      //alert(error);
+    })
   }
 
   @ViewChild('taskInput') taskInput: ElementRef;
@@ -43,8 +95,23 @@ export class TaskManagerComponent implements OnInit {
   }
 
   addItem(){
+    var todo: ToDos = <ToDos>{};
     if(this.txtAddItem !== ""){
-      this.allPendingTasks.push({task: this.txtAddItem});
+      //this.allPendingTasks.push({task: this.txtAddItem});
+
+      todo.id = null;
+      todo.name = this.txtAddItem;
+      todo.isPending = true;
+      todo.isActive = true;
+      //this.assignmentService.currentToDo = Object.assign({}, todo);
+      //console.log(todo);
+
+      this.assignmentService.createToDo(todo).subscribe((data: ToDos) => {
+        //alert("suceess" + data.name);
+      }, error => {
+        //console.log(error);
+      });
+
       this.txtAddItem = "";
     }
   }
